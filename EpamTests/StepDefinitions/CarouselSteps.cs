@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EpamTests.Pages;
 using EpamTests.Tests;
+using NUnit.Framework;
 using TechTalk.SpecFlow;
 
 namespace EpamTests.StepDefinitions
@@ -12,9 +9,6 @@ namespace EpamTests.StepDefinitions
     [Binding]
     public class CarouselSteps : BaseTest
     {
-        private string? expectedTitle;
-        private string? actualTitle;
-
         [When(@"I navigate to the Insights page")]
         public void WhenINavigateToTheInsightsPage()
         {
@@ -25,20 +19,22 @@ namespace EpamTests.StepDefinitions
         public void WhenISwipeTheCarousel(int times)
         {
             InsightsPage.SwipeCarousel(times);
-            expectedTitle = InsightsPage.GetArticleTitle();
         }
 
         [When(@"I click Read More on the active article")]
         public void WhenIClickReadMoreOnTheActiveArticle()
         {
             InsightsPage.ClickReadMoreButton();
-            actualTitle = new ArticlePage(driver).GetArticleTitle();
         }
 
-        [Then(@"the article title should match the carousel title")]
-        public void ThenTheArticleTitleShouldMatch()
+        [Then(@"the article title should be ""(.*)""")]
+        public void ThenTheArticleTitleShouldBe(string expectedTitle)
         {
-            Assert.That(actualTitle, Is.EqualTo(expectedTitle), "Article title does not match the carousel title.");
+            var articlePage = new ArticlePage(driver);
+            var actualTitle = articlePage.GetArticleTitle();
+
+            Assert.That(actualTitle, Is.EqualTo(expectedTitle),
+                $"Expected title: '{expectedTitle}', but got: '{actualTitle}'");
         }
     }
 }

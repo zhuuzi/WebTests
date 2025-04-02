@@ -13,8 +13,6 @@ namespace EpamTests.StepDefinitions
     [Binding]
     public class EpamDownloadSteps : BaseTest
     {
-        private string? downloadedFilePath;
-
         [When(@"I navigate to the About page")]
         public void WhenINavigateToTheAboutPage()
         {
@@ -30,7 +28,7 @@ namespace EpamTests.StepDefinitions
         [Then(@"the file ""(.*)"" should be downloaded")]
         public void ThenTheFileShouldBeDownloaded(string fileName)
         {
-            downloadedFilePath = Path.Combine(Constants.FilePaths.DownloadsPath, fileName);
+            var downloadedFilePath = Path.Combine(Constants.FilePaths.DownloadsPath, fileName);
             Assert.That(File.Exists(downloadedFilePath), Is.True, $"File {fileName} was not downloaded.");
         }
     }

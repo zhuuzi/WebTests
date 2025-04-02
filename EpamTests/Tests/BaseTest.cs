@@ -1,8 +1,9 @@
-﻿using OpenQA.Selenium;
-using EpamTests.Pages;
-using SauceDemoTests.Drivers;
+﻿using EpamTests.Pages;
 using EpamTests.Utils;
 using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using SauceDemoTests.Drivers;
 using TechTalk.SpecFlow;
 
 namespace EpamTests.Tests
@@ -15,11 +16,16 @@ namespace EpamTests.Tests
         protected InsightsPage InsightsPage;
 
         [BeforeScenario]
-        public void Setup()
+        public void SetupBeforeScenario() => Setup();
+
+        [SetUp]
+        public void SetupForNUnit() => Setup();
+
+        private void Setup()
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) // Force load
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
             string browser = configuration["Browser"];
@@ -34,17 +40,13 @@ namespace EpamTests.Tests
             HomePage.AcceptCookies();
         }
 
-
+        [TearDown]
         [AfterScenario]
         public void Teardown()
         {
-            if (driver != null)
-            {
-                driver.Quit();
-                driver.Dispose();
-                driver = null;
-            }
+            driver?.Quit();
+            driver?.Dispose();
+            driver = null;
         }
-
     }
 }
