@@ -6,9 +6,9 @@ Feature: Carousel Article Title Validation
     When I navigate to the Insights page
     And I swipe the carousel <numberOfSwipes> times
     And I click Read More on the active article
-    Then the article title should match the carousel title
+    Then the article title should be "<expectedTitle>"
 
     Examples:
-      | numberOfSwipes |
-      | 2              |
-      | 3              |
+      | numberOfSwipes | expectedTitle           |
+      | 2              | Generative AI           |
+      | 3              | Responsible AI          |
