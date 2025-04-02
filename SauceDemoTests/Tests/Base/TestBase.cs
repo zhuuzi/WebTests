@@ -33,8 +33,12 @@ namespace SauceDemoTests.Tests.Base
         [TearDown]
         public void Teardown()
         {
-            driver.Quit();
-            driver.Dispose();
+            if (driver != null)
+            {
+                driver.Quit();
+                driver.Dispose();
+                driver = null;
+            }
         }
     }
 }
